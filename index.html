@@ -11,10 +11,15 @@
 <body>
   <div class="container">
     <h1>How many days?</h1>
-    <input type="date" id="dateInput" />
-    <button onclick="calculateDays()">Calculate!</button>
+    
+    <div class="input-group">
+      <input type="text" id="dateInput" placeholder="YYYY-MM-DD or YYYY-MM-DD HH:MM:SSS" />
+    </div>
+
+    <button class="calculate-btn" onclick="calculateDays()">Calculate</button>
     <p id="result"></p>
   </div>
+
   <script src="scripts/days.js"></script>
 </body>
 
