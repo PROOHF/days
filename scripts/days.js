@@ -3,19 +3,40 @@ function calculateDays() {
     const result = document.getElementById("result");
 
     if (!input) {
-        result.textContent = "Enter a date first (YYYY-MM-DD or YYYY-MM-DD HH:MM:SSS)";
+        result.textContent = "Enter a date first (YYYY-MM-DD, YYYYMMDD, YYMMDD, or YYYY-MM-DD HH:MM:SSS)";
+        result.classList.add("error");
         return;
     }
 
-    // Accept both "YYYY-MM-DD" and "YYYY-MM-DD HH:MM:SSS" formats
-    const dateRegex = /^\d{4}-\d{2}-\d{2}(\s+\d{2}:\d{2}:\d{3})?$/;
-    if (!dateRegex.test(input)) {
-        result.textContent = "Invalid format! Use YYYY-MM-DD or YYYY-MM-DD HH:MM:SSS";
+    // Parse different date formats
+    let datePart;
+    
+    // Check for YYYY-MM-DD (with optional HH:MM:SSS)
+    const dashFormatRegex = /^\d{4}-\d{2}-\d{2}(\s+\d{2}:\d{2}:\d{3})?$/;
+    if (dashFormatRegex.test(input)) {
+        datePart = input.split(' ')[0];
+    }
+    // Check for YYYYMMDD (8-digit format)
+    else if (/^\d{8}$/.test(input)) {
+        const year = input.substring(0, 4);
+        const month = input.substring(4, 6);
+        const day = input.substring(6, 8);
+        datePart = `${year}-${month}-${day}`;
+    }
+    // Check for YYMMDD (6-digit format)
+    else if (/^\d{6}$/.test(input)) {
+        const year = parseInt(input.substring(0, 2));
+        // Assume 1900s for years >= 30, 2000s for years < 30
+        const fullYear = year >= 30 ? 1900 + year : 2000 + year;
+        const month = input.substring(2, 4);
+        const day = input.substring(4, 6);
+        datePart = `${fullYear}-${month}-${day}`;
+    }
+    else {
+        result.textContent = "Invalid format! Use YYYY-MM-DD, YYYYMMDD, YYMMDD, or YYYY-MM-DD HH:MM:SSS";
+        result.classList.add("error");
         return;
     }
-
-    // Extract just the date part (YYYY-MM-DD)
-    const datePart = input.split(' ')[0];
 
     const today = new Date();
     const selected = new Date(datePart + 'T00:00:00');
@@ -23,8 +44,12 @@ function calculateDays() {
     // Check if date is valid
     if (isNaN(selected.getTime())) {
         result.textContent = "Invalid date!";
+        result.classList.add("error");
         return;
     }
+
+    // Remove error class on success
+    result.classList.remove("error");
 
     // Reset
     today.setHours(0, 0, 0, 0);

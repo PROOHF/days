@@ -82,6 +82,7 @@ input[type="text"]:focus {
 .calculate-btn {
     width: 100%;
     background: var(--accent-color);
+    color: white;
     font-family: inherit;
     padding: 14px 20px;
     font-weight: 700;
@@ -111,6 +112,26 @@ input[type="text"]:focus {
     font-weight: 500;
     min-height: 1.5em;
     transition: color 0.3s ease;
+}
+
+#result.error {
+    color: #f7768e;
+}
+
+.format-info {
+    margin-top: 20px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.format-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.format-info li {
+    padding: 4px 0;
 }
 
 .copy-feedback {
