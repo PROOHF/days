@@ -3,37 +3,39 @@ function calculateDays() {
     const result = document.getElementById("result");
 
     if (!input) {
-        result.textContent = "Enter a date first (YYYY-MM-DD, YYYYMMDD, YYMMDD, or YYYY-MM-DD HH:MM:SSS)";
+        result.textContent = "Enter a date first (YYYY-MM-DD, YYYYMMDD, YYMMDD, or any with optional time)";
         result.classList.add("error");
         return;
     }
 
     // Parse different date formats
     let datePart;
-    
-    // Check for YYYY-MM-DD (with optional HH:MM:SSS)
-    const dashFormatRegex = /^\d{4}-\d{2}-\d{2}(\s+\d{2}:\d{2}:\d{3})?$/;
+
+    // Check for YYYY-MM-DD (with optional time after)
+    const dashFormatRegex = /^\d{4}-\d{2}-\d{2}(\s|T|$)/;
     if (dashFormatRegex.test(input)) {
-        datePart = input.split(' ')[0];
+        datePart = input.substring(0, 10); // Take first 10 chars: YYYY-MM-DD
     }
-    // Check for YYYYMMDD (8-digit format)
-    else if (/^\d{8}$/.test(input)) {
-        const year = input.substring(0, 4);
-        const month = input.substring(4, 6);
-        const day = input.substring(6, 8);
+    // Check for YYYYMMDD (8-digit format, with optional time after)
+    else if (/^\d{8}/.test(input) && input.length >= 8) {
+        const dateStr = input.substring(0, 8);
+        const year = dateStr.substring(0, 4);
+        const month = dateStr.substring(4, 6);
+        const day = dateStr.substring(6, 8);
         datePart = `${year}-${month}-${day}`;
     }
-    // Check for YYMMDD (6-digit format)
-    else if (/^\d{6}$/.test(input)) {
-        const year = parseInt(input.substring(0, 2));
+    // Check for YYMMDD (6-digit format, with optional time after)
+    else if (/^\d{6}/.test(input) && input.length >= 6) {
+        const dateStr = input.substring(0, 6);
+        const year = parseInt(dateStr.substring(0, 2));
         // Assume 1900s for years >= 30, 2000s for years < 30
         const fullYear = year >= 30 ? 1900 + year : 2000 + year;
-        const month = input.substring(2, 4);
-        const day = input.substring(4, 6);
+        const month = dateStr.substring(2, 4);
+        const day = dateStr.substring(4, 6);
         datePart = `${fullYear}-${month}-${day}`;
     }
     else {
-        result.textContent = "Invalid format! Use YYYY-MM-DD, YYYYMMDD, YYMMDD, or YYYY-MM-DD HH:MM:SSS";
+        result.textContent = "Invalid format! Use YYYY-MM-DD, YYYYMMDD, YYMMDD, or any with optional time";
         result.classList.add("error");
         return;
     }
