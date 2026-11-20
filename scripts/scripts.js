@@ -3,7 +3,7 @@ function calculateDays() {
     const result = document.getElementById("result");
 
     if (!input) {
-        result.textContent = "Enter a date first (YYYY-MM-DD, YYYYMMDD, YYMMDD, or any with optional time)";
+        result.textContent = "Please enter a date first, you can see supported formats above :]";
         result.classList.add("error");
         return;
     }
@@ -35,7 +35,7 @@ function calculateDays() {
         datePart = `${fullYear}-${month}-${day}`;
     }
     else {
-        result.textContent = "Invalid format! Use YYYY-MM-DD, YYYYMMDD, YYMMDD, or any with optional time";
+        result.textContent = "Invalid format, you can see supported formats above :]";
         result.classList.add("error");
         return;
     }
